@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback - J3 Padel</title>
+  <style>
+    :root{--bg:#050505;--surface:#0f0f0f;--border:rgba(255,255,255,0.08);--text:#fff;--text2:rgba(255,255,255,0.55);--text3:rgba(255,255,255,0.3);--accent:#818cf8;--success:#4ade80}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;min-height:100vh}
+    .c{max-width:480px;margin:0 auto;padding:20px}
+    .h{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+    .logo{width:44px;height:44px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900}
+    .h h1{font-size:18px;font-weight:800}
+    .h p{font-size:12px;color:var(--text2)}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px}
+    .ch{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .ci{width:44px;height:44px;background:rgba(74,222,128,0.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .ct{font-size:15px;font-weight:700}
+    .cs{font-size:12px;color:var(--text2);margin-top:2px}
+    .sl{font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+    .chip{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600}
+    .dr{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px}
+    .ia{background:rgba(129,140,248,0.08);border:1px solid rgba(129,140,248,0.2);border-radius:12px;padding:14px;margin-top:16px}
+    .ial{font-size:10px;font-weight:800;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px}
+    .iat{font-size:13px;color:var(--text2);line-height:1.6;white-space:pre-wrap}
+    .fl{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:block}
+    input,textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;padding:14px;outline:none;font-family:inherit;margin-bottom:16px}
+    input:focus,textarea:focus{border-color:var(--accent)}
+    input::placeholder,textarea::placeholder{color:var(--text3)}
+    textarea{min-height:120px;resize:none;line-height:1.5}
+    button{width:100%;padding:16px;background:var(--text);color:var(--bg);border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer}
+    button:disabled{opacity:0.5}
+    .done{text-align:center;padding:60px 20px}
+    .di{width:72px;height:72px;background:rgba(74,222,128,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;color:var(--success)}
+    .done h2{font-size:22px;font-weight:800;margin-bottom:8px}
+    .done p{font-size:14px;color:var(--text2)}
+    .ld,.er{text-align:center;padding:60px 20px}
+    .ld{color:var(--text2)}
+    .er{color:#f87171}
+  </style>
+</head>
+<body>
+  <div class="c">
+    <div class="h"><div class="logo">J3</div><div><h1>Feedback de entrenamiento</h1><p>Ayuda a mejorar a tu jugador</p></div></div>
+    <div id="ld" class="ld">Cargando...</div>
+    <div id="er" class="er" style="display:none"></div>
+    <div id="ct" style="display:none"></div>
+  </div>
+  <script>
+    const A='https://pikabkeebxedskogaaac.supabase.co/functions/v1/training-feedback-api',P=new URLSearchParams(location.search),T=P.get('token');
+    async function L(){if(!T){E('Token no proporcionado');return}try{const r=await fetch(A+'?token='+T),d=await r.json();if(d.error)return E(d.error);R(d.training,d.alreadyDone)}catch(e){E('Error al cargar')}}
+    function E(m){document.getElementById('ld').style.display='none';document.getElementById('er').style.display='block';document.getElementById('er').textContent=m}
+    function R(t,done){document.getElementById('ld').style.display='none';const c=document.getElementById('ct');c.style.display='block';if(done){c.innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>';return}
+    const f=new Date(t.created_at).toLocaleDateString('es-ES',{day:'numeric',month:'long'}),l=[t.lugar,t.tipo_pista].filter(Boolean).join(' - '),g=t.golpes_trabajados||[];
+    let h='<div class="card"><div class="ch"><div class="ci">🎾</div><div><div class="ct">Sesion del '+f+'</div>'+(l?'<div class="cs">'+l+'</div>':'')+'</div></div>';
+    if(g.length)h+='<div class="sl">Golpes trabajados</div><div class="chips">'+g.map(x=>'<span class="chip">'+x+'</span>').join('')+'</div>';
+    if(t.sensaciones)h+='<div class="dr"><strong>Sensaciones:</strong> '+t.sensaciones+'</div>';
+    if(t.notas_raw)h+='<div class="dr">'+t.notas_raw+'</div>';
+    if(t.analisis_ia)h+='<div class="ia"><div class="ial">ANALISIS J3</div><div class="iat">'+t.analisis_ia+'</div></div>';
+    h+='</div><form id="fm"><label class="fl">Tu nombre</label><input id="nm" placeholder="Nombre" required><label class="fl">Tu feedback</label><textarea id="fb" placeholder="Que tal ha entrenado? Que debe mejorar?" required></textarea><button type="submit" id="bt">Enviar feedback</button></form>';
+    c.innerHTML=h;document.getElementById('fm').onsubmit=S}
+    async function S(e){e.preventDefault();const b=document.getElementById('bt');b.disabled=true;b.textContent='Enviando...';
+    try{const r=await fetch(A+'?token='+T,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:document.getElementById('nm').value,feedback:document.getElementById('fb').value})});
+    const d=await r.json();if(d.success){document.getElementById('ct').innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>'}else{alert(d.error||'Error');b.disabled=false;b.textContent='Enviar feedback'}}
+    catch(x){alert('Error');b.disabled=false;b.textContent='Enviar feedback'}}
+    L();
+  </script>
+</body>
+</html>
