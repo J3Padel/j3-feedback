@@ -43,14 +43,14 @@
 </head>
 <body>
   <div class="c">
-    <div class="h"><div class="logo">J3</div><div><h1>Feedback de entrenamiento</h1><p>Ayuda a mejorar a tu jugador</p></div></div>
+    <div class="h"><div class="logo">J3</div><div><h1>Feedback</h1><p>Ayuda a mejorar a tu jugador</p></div></div>
     <div id="ld" class="ld">Cargando...</div>
     <div id="er" class="er" style="display:none"></div>
     <div id="ct" style="display:none"></div>
   </div>
   <script>
-    const A='https://pikabkeebxedskogaaac.supabase.co/functions/v1/training-feedback-api',P=new URLSearchParams(location.search),T=P.get('token');
-    async function L(){if(!T){E('Token no proporcionado');return}try{const r=await fetch(A+'?token='+T),d=await r.json();if(d.error)return E(d.error);R(d.training,d.alreadyDone)}catch(e){E('Error al cargar')}}
+    const API='https://pikabkeebxedskogaaac.supabase.co/functions/v1/training-feedback-api',P=new URLSearchParams(location.search),T=P.get('token');
+    async function L(){if(!T){E('Token no proporcionado');return}try{const r=await fetch(API+'?token='+T),d=await r.json();if(d.error)return E(d.error);R(d.training,d.alreadyDone)}catch(e){E('Error al cargar')}}
     function E(m){document.getElementById('ld').style.display='none';document.getElementById('er').style.display='block';document.getElementById('er').textContent=m}
     function R(t,done){document.getElementById('ld').style.display='none';const c=document.getElementById('ct');c.style.display='block';if(done){c.innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>';return}
     const f=new Date(t.created_at).toLocaleDateString('es-ES',{day:'numeric',month:'long'}),l=[t.lugar,t.tipo_pista].filter(Boolean).join(' - '),g=t.golpes_trabajados||[];
@@ -62,7 +62,7 @@
     h+='</div><form id="fm"><label class="fl">Tu nombre</label><input id="nm" placeholder="Nombre" required><label class="fl">Tu feedback</label><textarea id="fb" placeholder="Que tal ha entrenado? Que debe mejorar?" required></textarea><button type="submit" id="bt">Enviar feedback</button></form>';
     c.innerHTML=h;document.getElementById('fm').onsubmit=S}
     async function S(e){e.preventDefault();const b=document.getElementById('bt');b.disabled=true;b.textContent='Enviando...';
-    try{const r=await fetch(A+'?token='+T,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:document.getElementById('nm').value,feedback:document.getElementById('fb').value})});
+    try{const r=await fetch(API+'?token='+T,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:document.getElementById('nm').value,feedback:document.getElementById('fb').value})});
     const d=await r.json();if(d.success){document.getElementById('ct').innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>'}else{alert(d.error||'Error');b.disabled=false;b.textContent='Enviar feedback'}}
     catch(x){alert('Error');b.disabled=false;b.textContent='Enviar feedback'}}
     L();
