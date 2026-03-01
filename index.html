@@ -15,7 +15,8 @@
     .h p{font-size:12px;color:var(--text2)}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px}
     .ch{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-    .ci{width:44px;height:44px;background:rgba(74,222,128,0.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .ci{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .ci.train{background:rgba(129,140,248,0.12)}
     .ci.match{background:rgba(74,222,128,0.12)}
     .ci.torneo{background:rgba(234,179,8,0.12)}
     .ct{font-size:15px;font-weight:700}
@@ -61,73 +62,62 @@
         const r=await fetch(API+'?token='+T);
         const d=await r.json();
         if(d.error)return E(d.error);
-        if(d.type==='training'){
-          RT(d.training,d.alreadyDone);
-        }else{
-          RM(d.match,d.alreadyDone,d.type);
-        }
-      }catch(e){E('Error al cargar')}
+        if(d.type==='training'){RT(d.training,d.alreadyDone)}
+        else{RM(d.match,d.alreadyDone,d.type)}
+      }catch(e){E('Error al cargar: '+e.message)}
     }
     
-    function E(m){
-      document.getElementById('ld').style.display='none';
-      document.getElementById('er').style.display='block';
-      document.getElementById('er').textContent=m;
-    }
+    function E(m){document.getElementById('ld').style.display='none';document.getElementById('er').style.display='block';document.getElementById('er').textContent=m}
     
     function RT(t,done){
       document.getElementById('ld').style.display='none';
-      const c=document.getElementById('ct');
-      c.style.display='block';
-      if(done){c.innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>';return}
+      const c=document.getElementById('ct');c.style.display='block';
+      if(done){c.innerHTML=doneHTML();return}
       const f=new Date(t.created_at).toLocaleDateString('es-ES',{day:'numeric',month:'long'});
       const l=[t.lugar,t.tipo_pista].filter(Boolean).join(' - ');
       const g=t.golpes_trabajados||[];
-      let h='<div class="card"><div class="ch"><div class="ci">🎾</div><div><div class="ct">Entrenamiento del '+f+'</div>'+(l?'<div class="cs">'+l+'</div>':'')+'</div></div>';
+      let h='<div class="card"><div class="ch"><div class="ci train">🎾</div><div><div class="ct">Entrenamiento del '+f+'</div>'+(l?'<div class="cs">'+l+'</div>':'')+'</div></div>';
       if(g.length)h+='<div class="sl">Golpes trabajados</div><div class="chips">'+g.map(x=>'<span class="chip">'+x+'</span>').join('')+'</div>';
       if(t.sensaciones)h+='<div class="dr"><strong>Sensaciones:</strong> '+t.sensaciones+'</div>';
       if(t.notas_raw)h+='<div class="dr">'+t.notas_raw+'</div>';
       if(t.analisis_ia)h+='<div class="ia"><div class="ial">ANALISIS J3</div><div class="iat">'+t.analisis_ia+'</div></div>';
       h+='</div>'+formHTML();
-      c.innerHTML=h;
-      document.getElementById('fm').onsubmit=S;
+      c.innerHTML=h;document.getElementById('fm').onsubmit=S;
     }
     
     function RM(m,done,tipo){
       document.getElementById('ld').style.display='none';
-      const c=document.getElementById('ct');
-      c.style.display='block';
-      if(done){c.innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>';return}
+      const c=document.getElementById('ct');c.style.display='block';
+      if(done){c.innerHTML=doneHTML();return}
       const ctx=m.contexto||{};
-      const icon=tipo==='torneo'?'🏆':'🎾';
-      const ciClass=tipo==='torneo'?'ci torneo':'ci match';
-      const titulo=tipo==='torneo'?'Partido de torneo':'Partido';
+      const isTorneo=tipo==='torneo';
+      const icon=isTorneo?'🏆':'🎾';
+      const ciClass=isTorneo?'ci torneo':'ci match';
+      const titulo=isTorneo?'Partido de torneo':(tipo==='amistoso'?'Partido amistoso':'Partido');
+      const res=ctx.resultado==='win'?'🏆 Victoria':'❌ Derrota';
       let info='';
-      if(ctx.resultado)info+='<div class="dr"><strong>Resultado:</strong> '+(ctx.resultado==='win'?'Victoria':'Derrota')+'</div>';
+      if(ctx.resultado)info+='<div class="dr"><strong>Resultado:</strong> '+res+'</div>';
       if(ctx.marcador)info+='<div class="dr"><strong>Marcador:</strong> '+ctx.marcador+'</div>';
+      if(ctx.companero)info+='<div class="dr"><strong>Compañero:</strong> '+ctx.companero+'</div>';
       if(ctx.rivales)info+='<div class="dr"><strong>Rivales:</strong> '+ctx.rivales+'</div>';
-      if(ctx.sensaciones&&ctx.sensaciones.length)info+='<div class="dr"><strong>Sensaciones:</strong> '+ctx.sensaciones.join(', ')+'</div>';
+      if(ctx.sensaciones)info+='<div class="dr"><strong>Sensaciones:</strong> '+(Array.isArray(ctx.sensaciones)?ctx.sensaciones.join(', '):ctx.sensaciones)+'</div>';
       if(ctx.notas)info+='<div class="dr">'+ctx.notas+'</div>';
       let h='<div class="card"><div class="ch"><div class="'+ciClass+'">'+icon+'</div><div><div class="ct">'+titulo+'</div>'+(ctx.torneo?'<div class="cs">'+ctx.torneo+(ctx.ronda?' - '+ctx.ronda:'')+'</div>':'')+'</div></div>';
       h+=info;
       if(ctx.analisis_ia)h+='<div class="ia"><div class="ial">ANALISIS J3</div><div class="iat">'+ctx.analisis_ia+'</div></div>';
       h+='</div>'+formHTML();
-      c.innerHTML=h;
-      document.getElementById('fm').onsubmit=S;
+      c.innerHTML=h;document.getElementById('fm').onsubmit=S;
     }
     
-    function formHTML(){
-      return '<form id="fm"><label class="fl">Tu nombre</label><input id="nm" placeholder="Nombre" required><label class="fl">Tu feedback</label><textarea id="fb" placeholder="Que tal ha jugado? Que debe mejorar?" required></textarea><button type="submit" id="bt">Enviar feedback</button></form>';
-    }
+    function formHTML(){return '<form id="fm"><label class="fl">Tu nombre</label><input id="nm" placeholder="Nombre" required><label class="fl">Tu feedback</label><textarea id="fb" placeholder="Que tal ha jugado? Que debe mejorar?" required></textarea><button type="submit" id="bt">Enviar feedback</button></form>'}
+    function doneHTML(){return '<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>'}
     
     async function S(e){
-      e.preventDefault();
-      const b=document.getElementById('bt');
-      b.disabled=true;b.textContent='Enviando...';
+      e.preventDefault();const b=document.getElementById('bt');b.disabled=true;b.textContent='Enviando...';
       try{
         const r=await fetch(API+'?token='+T,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:document.getElementById('nm').value,feedback:document.getElementById('fb').value})});
         const d=await r.json();
-        if(d.success){document.getElementById('ct').innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>El jugador ya puede ver tu feedback.</p></div>'}
+        if(d.success){document.getElementById('ct').innerHTML=doneHTML()}
         else{alert(d.error||'Error');b.disabled=false;b.textContent='Enviar feedback'}
       }catch(x){alert('Error');b.disabled=false;b.textContent='Enviar feedback'}
     }
