@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Feedback - J3 Padel</title>
   <style>
-    :root{--bg:#050505;--surface:#0f0f0f;--surface2:#1a1a1a;--border:rgba(255,255,255,0.08);--text:#fff;--text2:rgba(255,255,255,0.55);--text3:rgba(255,255,255,0.3);--accent:#818cf8;--success:#4ade80;--gold:#eab308}
+    :root{--bg:#050505;--surface:#0f0f0f;--surface2:#1a1a1a;--border:rgba(255,255,255,0.08);--text:#fff;--text2:rgba(255,255,255,0.55);--text3:rgba(255,255,255,0.3);--accent:#818cf8;--success:#4ade80;--gold:#eab308;--danger:#f87171}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;min-height:100vh}
-    .c{max-width:480px;margin:0 auto;padding:20px}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,sans-serif;min-height:100vh;padding-bottom:40px}
+    .c{max-width:500px;margin:0 auto;padding:20px}
     .h{display:flex;align-items:center;gap:12px;margin-bottom:24px}
     .logo{width:44px;height:44px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900}
     .h h1{font-size:18px;font-weight:800}
     .h p{font-size:12px;color:var(--text2)}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
     .card.match{border-color:rgba(74,222,128,0.2)}
+    .card.accent{border-color:rgba(129,140,248,0.2)}
     .ch{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-    .ci{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(74,222,128,0.12)}
+    .ci{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .ci.green{background:rgba(74,222,128,0.12)}
+    .ci.accent{background:rgba(129,140,248,0.12)}
     .ct{font-size:15px;font-weight:700}
     .cs{font-size:12px;color:var(--text2);margin-top:2px}
     .dr{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px}
@@ -24,21 +27,28 @@
     .section-title{font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
     .section-title .icon{font-size:14px}
     .pilar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
-    .pilar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .pilar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
     .pilar-name{font-size:14px;font-weight:700}
     .rating{display:flex;gap:6px}
-    .rating-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s}
+    .rating-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
     .rating-btn:hover{border-color:var(--accent);color:var(--text)}
     .rating-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-    textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;padding:12px;outline:none;font-family:inherit;resize:none;min-height:80px;line-height:1.5}
+    .checks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .check-label{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em}
+    .check{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:12px;color:var(--text2)}
+    .check:hover{border-color:var(--text3)}
+    .check.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .check.active.green{background:var(--success);border-color:var(--success)}
+    .check.active.red{background:var(--danger);border-color:var(--danger)}
+    textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;padding:12px;outline:none;font-family:inherit;resize:none;min-height:70px;line-height:1.5}
     textarea:focus{border-color:var(--accent)}
     textarea::placeholder{color:var(--text3)}
     .fl{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:block}
     input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;padding:14px;outline:none;font-family:inherit;margin-bottom:16px}
     input:focus{border-color:var(--accent)}
     input::placeholder{color:var(--text3)}
-    button{width:100%;padding:16px;background:var(--text);color:var(--bg);border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;margin-top:8px}
-    button:disabled{opacity:0.5}
+    button.submit{width:100%;padding:16px;background:var(--text);color:var(--bg);border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;margin-top:16px}
+    button.submit:disabled{opacity:0.5}
     .done{text-align:center;padding:60px 20px}
     .di{width:72px;height:72px;background:rgba(74,222,128,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;color:var(--success)}
     .done h2{font-size:22px;font-weight:800;margin-bottom:8px}
@@ -46,14 +56,29 @@
     .ld,.er{text-align:center;padding:60px 20px}
     .ld{color:var(--text2)}
     .er{color:#f87171}
+    .tabs{display:flex;gap:8px;margin-bottom:20px}
+    .tab{flex:1;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s}
+    .tab:hover{border-color:var(--text3)}
+    .tab.active{background:var(--accent);border-color:var(--accent)}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
     .partner-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
     .partner-section h3{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
     .partner-section h3 .emoji{font-size:16px}
+    .radio-group{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .radio{padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:12px;color:var(--text2);transition:all 0.2s}
+    .radio:hover{border-color:var(--text3)}
+    .radio.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .player-tab{display:flex;gap:8px;margin-bottom:16px}
+    .player-tab-btn{flex:1;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:12px;font-weight:600;cursor:pointer}
+    .player-tab-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    .player-panel{display:none}
+    .player-panel.active{display:block}
   </style>
 </head>
 <body>
   <div class="c">
-    <div class="h"><div class="logo">J3</div><div><h1>Feedback</h1><p id="subtitle">Ayuda a mejorar a tu jugador</p></div></div>
+    <div class="h"><div class="logo">J3</div><div><h1>Feedback</h1><p id="subtitle">Cargando...</p></div></div>
     <div id="ld" class="ld">Cargando...</div>
     <div id="er" class="er" style="display:none"></div>
     <div id="ct" style="display:none"></div>
@@ -63,6 +88,30 @@
     const P=new URLSearchParams(location.search);
     const T=P.get('token');
     let DATA=null;
+    
+    const GOLPES=['Derecha','Reves','Volea derecha','Volea reves','Vibora','Remate plano','Remate liftado','Globo','Saque','Resto','Pared de fondo','Doble pared'];
+    const TACTICO=['Lectura del rival','Eleccion de golpes','Construccion del punto','Gestion del centro','Transiciones defensa-ataque','Variacion de ritmo','Exploto debilidades','Coordinacion con companero'];
+    const FISICO=['Velocidad de desplazamiento','Resistencia puntos largos','Recuperacion entre puntos','Posicion de espera','Llegada a bolas dificiles','Aguante en sets finales'];
+    const MENTAL=['Puntos importantes','Errores propios','Presion del marcador','Comunicacion con companero','Actitud positiva','Concentracion','Rutina entre puntos','Gestion del tie-break'];
+    const COMPANERO_POSITIVO=['Comunicacion en pista','Cubria bien su lado','Buenos globos de salida','Solido en red','Actitud positiva','Gestion de errores','Buenas decisiones'];
+    const COMPANERO_MEJORAR=['Comunicar mas','Comunicar menos','Cubrir mejor el centro','No precipitarse','Mas paciencia','Mas agresividad','Confiar mas en mi'];
+    const PAREJA_FUNCIONO=['Comunicacion','Movimientos coordinados','Uno atacaba otro cubria','Gestion momentos dificiles','Variacion de juego','Paciencia'];
+    const PAREJA_FALLO=['Descoordinacion','Huecos en el centro','Falta de comunicacion','Nos frustramos','No cambiamos cuando no funcionaba'];
+    
+    let coachData = {
+      player1: { tecnico: {rating:0,bien:[],mejorar:[],comentario:''}, tactico:{rating:0,bien:[],mejorar:[],comentario:''}, fisico:{rating:0,bien:[],mejorar:[],comentario:''}, mental:{rating:0,bien:[],mejorar:[],comentario:''} },
+      player2: { tecnico: {rating:0,bien:[],mejorar:[],comentario:''}, tactico:{rating:0,bien:[],mejorar:[],comentario:''}, fisico:{rating:0,bien:[],mejorar:[],comentario:''}, mental:{rating:0,bien:[],mejorar:[],comentario:''} },
+      fortaleza1:'', mejora1:'', recomendaciones1:'',
+      fortaleza2:'', mejora2:'', recomendaciones2:'',
+      comentarioPartido:''
+    };
+    
+    let partnerData = {
+      experiencia:'', positivo:[], mejorar:[], comentarioCompanero:'',
+      rival1:{nombre:'',nivel:'',lado:'',bien:[],mal:[],notas:''},
+      rival2:{nombre:'',nivel:'',lado:'',bien:[],mal:[],notas:''},
+      parejaFunciono:[], parejaFallo:[], comentarioPartido:''
+    };
     
     async function L(){
       if(!T){E('Token no proporcionado');return}
@@ -78,7 +127,7 @@
     }
     
     function E(m){document.getElementById('ld').style.display='none';document.getElementById('er').style.display='block';document.getElementById('er').textContent=m}
-    function showDone(){document.getElementById('ld').style.display='none';document.getElementById('ct').style.display='block';document.getElementById('ct').innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>Gracias por tu valoracion.</p></div>'}
+    function showDone(){document.getElementById('ld').style.display='none';document.getElementById('ct').style.display='block';document.getElementById('ct').innerHTML='<div class="done"><div class="di">✓</div><h2>Feedback enviado</h2><p>Gracias por tu valoracion</p></div>'}
     
     function renderCoachForm(d){
       document.getElementById('ld').style.display='none';
@@ -86,13 +135,16 @@
       const c=document.getElementById('ct');c.style.display='block';
       const ctx=d.match?.contexto||d.training||{};
       const isMatch=d.type!=='training';
+      const hasPartner=ctx.companero && ctx.partner_user_id;
+      const player1Name=ctx.jugador_nombre||'Jugador';
+      const player2Name=ctx.companero||'Companero';
       
       let matchInfo='';
       if(isMatch){
         const res=ctx.resultado==='win'?'🏆 Victoria':'❌ Derrota';
-        matchInfo=`<div class="card match"><div class="ch"><div class="ci">🎾</div><div><div class="ct">${d.type==='torneo'?'Partido de torneo':'Partido amistoso'}</div><div class="cs">${ctx.marcador||''}</div></div></div>`;
+        matchInfo=`<div class="card match"><div class="ch"><div class="ci green">🎾</div><div><div class="ct">${d.type==='torneo'?'Partido de torneo':'Partido amistoso'}</div><div class="cs">${ctx.marcador||''}</div></div></div>`;
         if(ctx.resultado)matchInfo+=`<div class="dr"><strong>Resultado:</strong> ${res}</div>`;
-        if(ctx.companero)matchInfo+=`<div class="dr"><strong>Companero:</strong> ${ctx.companero}</div>`;
+        if(ctx.companero)matchInfo+=`<div class="dr"><strong>Pareja:</strong> ${player1Name} y ${player2Name}</div>`;
         if(ctx.rivales)matchInfo+=`<div class="dr"><strong>Rivales:</strong> ${ctx.rivales}</div>`;
         matchInfo+='</div>';
       }
@@ -103,53 +155,105 @@
           <label class="fl">Tu nombre</label>
           <input id="nm" placeholder="Nombre" required>
           
-          <div class="section">
-            <div class="section-title"><span class="icon">🎯</span> EVALUACION POR PILARES</div>
+          ${hasPartner?`
+          <div class="player-tab">
+            <button type="button" class="player-tab-btn active" onclick="switchPlayer(1)">${player1Name}</button>
+            <button type="button" class="player-tab-btn" onclick="switchPlayer(2)">${player2Name}</button>
+          </div>
+          `:''}
+          
+          <div id="player1-panel" class="player-panel active">
+            ${hasPartner?`<div class="section-title"><span class="icon">👤</span> EVALUACION DE ${player1Name.toUpperCase()}</div>`:''}
+            ${renderPilarSection('tecnico', 'Tecnico', '🎯', GOLPES, 1)}
+            ${renderPilarSection('tactico', 'Tactico', '🧠', TACTICO, 1)}
+            ${renderPilarSection('fisico', 'Fisico', '💪', FISICO, 1)}
+            ${renderPilarSection('mental', 'Mental', '🧘', MENTAL, 1)}
             
-            <div class="pilar">
-              <div class="pilar-header">
-                <span class="pilar-name">Tecnico</span>
-                <div class="rating" data-field="tecnico">${ratingBtns('tecnico')}</div>
-              </div>
-              <textarea id="com_tecnico" placeholder="Golpes, tecnica, ejecucion..."></textarea>
-            </div>
-            
-            <div class="pilar">
-              <div class="pilar-header">
-                <span class="pilar-name">Tactico</span>
-                <div class="rating" data-field="tactico">${ratingBtns('tactico')}</div>
-              </div>
-              <textarea id="com_tactico" placeholder="Lectura de juego, decisiones, estrategia..."></textarea>
-            </div>
-            
-            <div class="pilar">
-              <div class="pilar-header">
-                <span class="pilar-name">Fisico</span>
-                <div class="rating" data-field="fisico">${ratingBtns('fisico')}</div>
-              </div>
-              <textarea id="com_fisico" placeholder="Movimiento, resistencia, velocidad..."></textarea>
-            </div>
-            
-            <div class="pilar">
-              <div class="pilar-header">
-                <span class="pilar-name">Mental</span>
-                <div class="rating" data-field="mental">${ratingBtns('mental')}</div>
-              </div>
-              <textarea id="com_mental" placeholder="Gestion de presion, actitud, concentracion..."></textarea>
+            <div class="section">
+              <div class="section-title"><span class="icon">📝</span> RESUMEN ${player1Name.toUpperCase()}</div>
+              <label class="fl">Principal fortaleza hoy</label>
+              <textarea id="fortaleza1" placeholder="Que hizo especialmente bien..." onchange="coachData.fortaleza1=this.value"></textarea>
+              <label class="fl" style="margin-top:12px">Principal area de mejora</label>
+              <textarea id="mejora1" placeholder="Que debe trabajar..." onchange="coachData.mejora1=this.value"></textarea>
+              <label class="fl" style="margin-top:12px">Recomendaciones para entrenar</label>
+              <textarea id="recomendaciones1" placeholder="Ejercicios o enfoques sugeridos..." onchange="coachData.recomendaciones1=this.value"></textarea>
             </div>
           </div>
           
+          ${hasPartner?`
+          <div id="player2-panel" class="player-panel">
+            <div class="section-title"><span class="icon">👤</span> EVALUACION DE ${player2Name.toUpperCase()}</div>
+            ${renderPilarSection('tecnico', 'Tecnico', '🎯', GOLPES, 2)}
+            ${renderPilarSection('tactico', 'Tactico', '🧠', TACTICO, 2)}
+            ${renderPilarSection('fisico', 'Fisico', '💪', FISICO, 2)}
+            ${renderPilarSection('mental', 'Mental', '🧘', MENTAL, 2)}
+            
+            <div class="section">
+              <div class="section-title"><span class="icon">📝</span> RESUMEN ${player2Name.toUpperCase()}</div>
+              <label class="fl">Principal fortaleza hoy</label>
+              <textarea id="fortaleza2" placeholder="Que hizo especialmente bien..." onchange="coachData.fortaleza2=this.value"></textarea>
+              <label class="fl" style="margin-top:12px">Principal area de mejora</label>
+              <textarea id="mejora2" placeholder="Que debe trabajar..." onchange="coachData.mejora2=this.value"></textarea>
+              <label class="fl" style="margin-top:12px">Recomendaciones para entrenar</label>
+              <textarea id="recomendaciones2" placeholder="Ejercicios o enfoques sugeridos..." onchange="coachData.recomendaciones2=this.value"></textarea>
+            </div>
+          </div>
+          `:''}
+          
           <div class="section">
-            <div class="section-title"><span class="icon">💬</span> COMENTARIOS GENERALES</div>
-            <textarea id="com_general" placeholder="Observaciones adicionales, recomendaciones..." style="min-height:100px"></textarea>
+            <div class="section-title"><span class="icon">💬</span> COMENTARIO GENERAL DEL PARTIDO</div>
+            <textarea id="comentarioPartido" placeholder="Observaciones generales, dinamica de la pareja, aspectos tacticos del partido..." style="min-height:100px" onchange="coachData.comentarioPartido=this.value"></textarea>
           </div>
           
-          <button type="submit" id="bt">Enviar feedback</button>
+          <button type="submit" class="submit" id="bt">Enviar feedback</button>
         </form>
       `;
       
-      initRatings();
       document.getElementById('fm').onsubmit=submitCoach;
+    }
+    
+    function renderPilarSection(key, name, icon, options, player) {
+      const p = player === 1 ? 'player1' : 'player2';
+      return `
+        <div class="pilar">
+          <div class="pilar-header">
+            <span class="pilar-name">${icon} ${name}</span>
+            <div class="rating">
+              ${[1,2,3,4,5].map(n=>`<button type="button" class="rating-btn" data-player="${p}" data-pilar="${key}" data-value="${n}" onclick="setRating(this)">${n}</button>`).join('')}
+            </div>
+          </div>
+          <div class="check-label">¿Que hizo bien?</div>
+          <div class="checks">${options.map(o=>`<div class="check green" data-player="${p}" data-pilar="${key}" data-type="bien" data-value="${o}" onclick="toggleCheck(this)">${o}</div>`).join('')}</div>
+          <div class="check-label">¿Que debe mejorar?</div>
+          <div class="checks">${options.map(o=>`<div class="check red" data-player="${p}" data-pilar="${key}" data-type="mejorar" data-value="${o}" onclick="toggleCheck(this)">${o}</div>`).join('')}</div>
+          <textarea placeholder="Observaciones de ${name.toLowerCase()}..." onchange="coachData.${p}.${key}.comentario=this.value"></textarea>
+        </div>
+      `;
+    }
+    
+    function setRating(btn) {
+      const p = btn.dataset.player;
+      const pilar = btn.dataset.pilar;
+      const val = parseInt(btn.dataset.value);
+      coachData[p][pilar].rating = val;
+      document.querySelectorAll(`.rating-btn[data-player="${p}"][data-pilar="${pilar}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    
+    function toggleCheck(el) {
+      const p = el.dataset.player;
+      const pilar = el.dataset.pilar;
+      const type = el.dataset.type;
+      const val = el.dataset.value;
+      const arr = coachData[p][pilar][type];
+      const idx = arr.indexOf(val);
+      if (idx > -1) { arr.splice(idx, 1); el.classList.remove('active'); }
+      else { arr.push(val); el.classList.add('active'); }
+    }
+    
+    function switchPlayer(num) {
+      document.querySelectorAll('.player-tab-btn').forEach((b,i) => b.classList.toggle('active', i === num-1));
+      document.querySelectorAll('.player-panel').forEach((p,i) => p.classList.toggle('active', i === num-1));
     }
     
     function renderPartnerForm(d){
@@ -158,10 +262,12 @@
       const c=document.getElementById('ct');c.style.display='block';
       const ctx=d.match?.contexto||{};
       const rivales=(ctx.rivales||'').split('/').map(r=>r.trim()).filter(Boolean);
+      if(rivales[0]) partnerData.rival1.nombre = rivales[0];
+      if(rivales[1]) partnerData.rival2.nombre = rivales[1];
       
       c.innerHTML=`
         <div class="card match">
-          <div class="ch"><div class="ci">🎾</div><div><div class="ct">Partido</div><div class="cs">${ctx.marcador||''} ${ctx.resultado==='win'?'- Victoria':'- Derrota'}</div></div></div>
+          <div class="ch"><div class="ci green">🎾</div><div><div class="ct">Partido</div><div class="cs">${ctx.marcador||''} ${ctx.resultado==='win'?'- Victoria':'- Derrota'}</div></div></div>
         </div>
         
         <form id="fm">
@@ -170,43 +276,89 @@
           
           <div class="partner-section">
             <h3><span class="emoji">🙋</span> Sobre tu companero</h3>
-            <textarea id="com_jugador" placeholder="Como jugo? Que hizo bien? Que puede mejorar?"></textarea>
+            <div class="check-label">Como fue jugar con el/ella?</div>
+            <div class="radio-group">
+              ${['Muy bien, gran companero','Bien, comodo','Normal','Algo dificil','Complicado'].map(o=>`<div class="radio" data-field="experiencia" data-value="${o}" onclick="setRadio(this,'experiencia')">${o}</div>`).join('')}
+            </div>
+            <div class="check-label">Que destacarias positivo?</div>
+            <div class="checks">${COMPANERO_POSITIVO.map(o=>`<div class="check green" data-field="positivo" data-value="${o}" onclick="togglePartnerCheck(this,'positivo')">${o}</div>`).join('')}</div>
+            <div class="check-label">Que podria mejorar?</div>
+            <div class="checks">${COMPANERO_MEJORAR.map(o=>`<div class="check red" data-field="mejorar" data-value="${o}" onclick="togglePartnerCheck(this,'mejorar')">${o}</div>`).join('')}</div>
+            <textarea id="comentarioCompanero" placeholder="Algo mas sobre tu companero..." onchange="partnerData.comentarioCompanero=this.value"></textarea>
           </div>
           
           <div class="partner-section">
             <h3><span class="emoji">⚔️</span> Sobre los rivales</h3>
-            ${rivales.length>=1?`<label class="fl">${rivales[0]||'Rival 1'}</label><input id="r1_nombre" value="${rivales[0]||''}" placeholder="Nombre rival 1"><textarea id="r1_feedback" placeholder="Como jugaba? Debilidades? Fortalezas?"></textarea>`:''}
-            ${rivales.length>=2||rivales.length===0?`<label class="fl" style="margin-top:12px">${rivales[1]||'Rival 2'}</label><input id="r2_nombre" value="${rivales[1]||''}" placeholder="Nombre rival 2"><textarea id="r2_feedback" placeholder="Como jugaba? Debilidades? Fortalezas?"></textarea>`:''}
+            ${renderRivalSection(1, rivales[0]||'')}
+            ${renderRivalSection(2, rivales[1]||'')}
           </div>
           
           <div class="partner-section">
-            <h3><span class="emoji">🤝</span> Sobre el partido</h3>
-            <textarea id="com_pareja" placeholder="Que funciono como pareja? Que no? Comunicacion?"></textarea>
+            <h3><span class="emoji">🤝</span> Sobre el partido como pareja</h3>
+            <div class="check-label">Que funciono?</div>
+            <div class="checks">${PAREJA_FUNCIONO.map(o=>`<div class="check green" data-field="parejaFunciono" data-value="${o}" onclick="togglePartnerCheck(this,'parejaFunciono')">${o}</div>`).join('')}</div>
+            <div class="check-label">Que fallo?</div>
+            <div class="checks">${PAREJA_FALLO.map(o=>`<div class="check red" data-field="parejaFallo" data-value="${o}" onclick="togglePartnerCheck(this,'parejaFallo')">${o}</div>`).join('')}</div>
+            <textarea id="comentarioPartido" placeholder="Reflexion general del partido..." onchange="partnerData.comentarioPartido=this.value"></textarea>
           </div>
           
-          <button type="submit" id="bt">Enviar feedback</button>
+          <button type="submit" class="submit" id="bt">Enviar feedback</button>
         </form>
       `;
       
       document.getElementById('fm').onsubmit=submitPartner;
     }
     
-    function ratingBtns(field){
-      return [1,2,3,4,5].map(n=>`<button type="button" class="rating-btn" data-field="${field}" data-value="${n}">${n}</button>`).join('');
+    function renderRivalSection(num, nombre) {
+      return `
+        <div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+          <label class="fl">Rival ${num}</label>
+          <input id="r${num}_nombre" value="${nombre}" placeholder="Nombre" onchange="partnerData.rival${num}.nombre=this.value">
+          <div class="check-label">Nivel percibido</div>
+          <div class="radio-group">
+            ${['Muy superior','Superior','Similar','Inferior','Muy inferior'].map(o=>`<div class="radio" data-value="${o}" onclick="setRivalRadio(this,${num},'nivel')">${o}</div>`).join('')}
+          </div>
+          <div class="check-label">Lado</div>
+          <div class="radio-group">
+            ${['Drive','Reves','No se'].map(o=>`<div class="radio" data-value="${o}" onclick="setRivalRadio(this,${num},'lado')">${o}</div>`).join('')}
+          </div>
+          <div class="check-label">Que hacia bien?</div>
+          <div class="checks">${['Volea','Remate','Vibora','Defensa','Globo','Saque','Lectura tactica','Fisico','Mental fuerte'].map(o=>`<div class="check green" data-rival="${num}" data-type="bien" data-value="${o}" onclick="toggleRivalCheck(this)">${o}</div>`).join('')}</div>
+          <div class="check-label">Que le costaba?</div>
+          <div class="checks">${['Volea','Remate','Vibora','Defensa','Globo','Saque','Lectura tactica','Fisico','Mental'].map(o=>`<div class="check red" data-rival="${num}" data-type="mal" data-value="${o}" onclick="toggleRivalCheck(this)">${o}</div>`).join('')}</div>
+          <textarea placeholder="Notas sobre este rival..." onchange="partnerData.rival${num}.notas=this.value"></textarea>
+        </div>
+      `;
     }
     
-    const ratings={tecnico:null,tactico:null,fisico:null,mental:null};
+    function setRadio(el, field) {
+      partnerData[field] = el.dataset.value;
+      el.parentElement.querySelectorAll('.radio').forEach(r => r.classList.remove('active'));
+      el.classList.add('active');
+    }
     
-    function initRatings(){
-      document.querySelectorAll('.rating-btn').forEach(btn=>{
-        btn.onclick=()=>{
-          const field=btn.dataset.field;
-          const value=parseInt(btn.dataset.value);
-          ratings[field]=value;
-          document.querySelectorAll(`.rating-btn[data-field="${field}"]`).forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-        };
-      });
+    function setRivalRadio(el, num, field) {
+      partnerData['rival'+num][field] = el.dataset.value;
+      el.parentElement.querySelectorAll('.radio').forEach(r => r.classList.remove('active'));
+      el.classList.add('active');
+    }
+    
+    function togglePartnerCheck(el, field) {
+      const val = el.dataset.value;
+      const arr = partnerData[field];
+      const idx = arr.indexOf(val);
+      if (idx > -1) { arr.splice(idx, 1); el.classList.remove('active'); }
+      else { arr.push(val); el.classList.add('active'); }
+    }
+    
+    function toggleRivalCheck(el) {
+      const num = el.dataset.rival;
+      const type = el.dataset.type;
+      const val = el.dataset.value;
+      const arr = partnerData['rival'+num][type];
+      const idx = arr.indexOf(val);
+      if (idx > -1) { arr.splice(idx, 1); el.classList.remove('active'); }
+      else { arr.push(val); el.classList.add('active'); }
     }
     
     async function submitCoach(e){
@@ -216,20 +368,26 @@
         const body={
           feedbackType:'coach',
           nombre:document.getElementById('nm').value,
-          rating_tecnico:ratings.tecnico,
-          comentario_tecnico:document.getElementById('com_tecnico').value,
-          rating_tactico:ratings.tactico,
-          comentario_tactico:document.getElementById('com_tactico').value,
-          rating_fisico:ratings.fisico,
-          comentario_fisico:document.getElementById('com_fisico').value,
-          rating_mental:ratings.mental,
-          comentario_mental:document.getElementById('com_mental').value,
-          comentario_general:document.getElementById('com_general').value
+          player1: coachData.player1,
+          player2: coachData.player2,
+          fortaleza1: coachData.fortaleza1,
+          mejora1: coachData.mejora1,
+          recomendaciones1: coachData.recomendaciones1,
+          fortaleza2: coachData.fortaleza2,
+          mejora2: coachData.mejora2,
+          recomendaciones2: coachData.recomendaciones2,
+          comentarioPartido: coachData.comentarioPartido,
+          // Legacy fields for compatibility
+          rating_tecnico: coachData.player1.tecnico.rating,
+          rating_tactico: coachData.player1.tactico.rating,
+          rating_fisico: coachData.player1.fisico.rating,
+          rating_mental: coachData.player1.mental.rating,
+          comentario_general: coachData.comentarioPartido
         };
         const r=await fetch(API+'?token='+T,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
         const d=await r.json();
         if(d.success){showDone()}else{alert(d.error||'Error');b.disabled=false;b.textContent='Enviar feedback'}
-      }catch(x){alert('Error');b.disabled=false;b.textContent='Enviar feedback'}
+      }catch(x){alert('Error: '+x.message);b.disabled=false;b.textContent='Enviar feedback'}
     }
     
     async function submitPartner(e){
@@ -239,17 +397,19 @@
         const body={
           feedbackType:'partner',
           nombre:document.getElementById('nm').value,
-          comentario_jugador:document.getElementById('com_jugador')?.value||'',
-          rival1_nombre:document.getElementById('r1_nombre')?.value||'',
-          rival1_feedback:document.getElementById('r1_feedback')?.value||'',
-          rival2_nombre:document.getElementById('r2_nombre')?.value||'',
-          rival2_feedback:document.getElementById('r2_feedback')?.value||'',
-          comentario_pareja:document.getElementById('com_pareja')?.value||''
+          ...partnerData,
+          // Legacy fields
+          comentario_jugador: partnerData.comentarioCompanero,
+          rival1_nombre: partnerData.rival1.nombre,
+          rival1_feedback: JSON.stringify(partnerData.rival1),
+          rival2_nombre: partnerData.rival2.nombre,
+          rival2_feedback: JSON.stringify(partnerData.rival2),
+          comentario_pareja: partnerData.comentarioPartido
         };
         const r=await fetch(API+'?token='+T,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
         const d=await r.json();
         if(d.success){showDone()}else{alert(d.error||'Error');b.disabled=false;b.textContent='Enviar feedback'}
-      }catch(x){alert('Error');b.disabled=false;b.textContent='Enviar feedback'}
+      }catch(x){alert('Error: '+x.message);b.disabled=false;b.textContent='Enviar feedback'}
     }
     
     L();
